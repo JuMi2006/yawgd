@@ -1,0 +1,10 @@
+# Defaults for yawgd initscript
+# sourced by /etc/init.d/yawgd
+# installed at /etc/default/yawgd by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+# Additional options that are passed to the daemon(s).
+DAEMON_ARGS="-p $PIDFILE"

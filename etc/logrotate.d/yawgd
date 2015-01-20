@@ -1,0 +1,19 @@
+/var/log/yawgd-plugin.log {
+	rotate 7
+	size 1M
+	copytruncate
+	compress
+	missingok
+	notifempty
+	weekly
+}
+
+/var/log/yawgd-eib.log {
+	rotate 7
+	size 1M
+	copytruncate
+	compress
+	missingok
+	notifempty
+	weekly
+}
