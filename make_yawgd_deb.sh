@@ -18,7 +18,7 @@
 #
 
 BUILD_DIR=/tmp
-VERSION='1.0'
+VERSION='1.01'
 
 cd $BUILD_DIR
 printf ">>> Build directory $BUILD_DIR create $BUILD_DIR/ebusd_build\n"
@@ -30,8 +30,7 @@ git clone https://github.com/JuMi2006/yawgd.git
 cd yawgd
 
 printf ">>> Remove hidden files\n"
-find $PWD -name .svn -print0 | xargs -0 rm -r
-find $PWD -name .gitignore -print0 | xargs -0 rm -r
+find $PWD -name .git -print0 | xargs -0 rm -r
 
 printf ">>> Create Debian package related files\n"
 mkdir trunk
@@ -41,6 +40,14 @@ mkdir trunk/usr
 
 cp -R etc/* trunk/etc
 cp -R usr/* trunk/usr
+
+printf ">>> Remove Plugins/eBus-related stuff\n"
+touch i-m-here
+rm -r etc/yawgd/plugin/*
+rm -r etc/yawgd/tools/*
+rm etc/yawgd/plugin-database.db
+rm etc/yawgd/eBus_plugin.conf
+rm etc/yawgd/yawgd-ebusd.csv
 
 printf ">>> ../DEBIAN/control\n"
 #ARCH=`dpkg --print-architecture`
@@ -52,7 +59,7 @@ Priority: required
 Architecture: $ARCH
 Maintainer: Mirko Hirsch <mirko.hirsch@gmx.de>
 Depends: liblog-log4perl-perl, libproc-pid-file-perl (>= 1.25), libfile-touch-perl, librrds-perl, libmath-round-perl, libmath-round-perl, libconfig-std-perl, libproc-daemon-perl
-Description: Daemon for EIB/KNX/(eBus)\n" > trunk/DEBIAN/control
+Description: Daemon for EIB/KNX\n" > trunk/DEBIAN/control
 
 printf ">>> ../DEBIAN/dirs\n"
 echo "usr/sbin
