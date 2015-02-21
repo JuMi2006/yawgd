@@ -41,12 +41,12 @@ else
     #maybe !?
     
     ###define @gets### includes cyclic
-    if ($type ne "set" && ($ga or $dpt or $rrd_type)){
+    if ($type ne "w" && ($ga or $dpt or $rrd_type)){
         $id++;
         push @gets,{ga => $ga, dpt => $dpt, rrd_type => $rrd_type, rrd_step => $rrd_step, type => $type, short => $short, comment => $comment, id => $id};
     }
     ###define @sets###
-    if ($type eq "set" && $ga){
+    if ($type eq "w" && $ga){
         push @sets,{ga => $ga, dpt => $dpt, rrd_type => $rrd_type, rrd_step => $rrd_step, type => $type, short => $short, comment => $comment, id => $id};
     }
 }
@@ -68,7 +68,7 @@ foreach my $set(@sets){
     if (defined $msg{'apci'}){
     if ($msg{'apci'} eq "A_GroupValue_Write" && $msg{'dst'} eq $set->{ga}){
         $msg{'value'} = decode_dpt($msg{'dst'},$msg{'data'},$set->{dpt}); # make eibga.conf useless
-        my $send_set = $set->{type}." ".$set->{short}." ".$msg{'value'} ;
+        my $send_set = $set->{type}." -c ".$set->{short}." ".$msg{'value'} ;
         plugin_log($plugname,$send_set);
         $answer = send_ebusd ($send_set);
         chomp $answer;
@@ -78,7 +78,7 @@ foreach my $set(@sets){
         ### Check for Response
         foreach my $get (@gets){
             if ($get->{short} eq $set->{short}){
-                my $send_get = $get->{type}." ".$get->{short};
+                my $send_get = $get->{type}." -c ".$get->{short};
                 $answer = send_ebusd ($send_get);
                 $answer =~ s!\s!!g;
                 plugin_log($plugname,"$get->{type} $get->{short} $answer");
@@ -123,7 +123,7 @@ unless (defined $msg{'dst'}) { #so doesnt work if a telegram reaches plugin
         if ($get->{id} == $plugin_info{$plugname.'_number'}){
             if ($debug){plugin_log($plugname,"ID: $get->{id}");}
             if ($debug){plugin_log($plugname,"$get->{short}")};
-            my $send_get = $get->{type}." ".$get->{short};
+            my $send_get = $get->{type}." -c ".$get->{short};
             $answer = send_ebusd ($send_get);
             chomp $answer;
             if ($answer =~ /error/){
