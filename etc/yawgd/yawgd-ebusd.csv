@@ -1,4 +1,4 @@
 #GA;DPT;RRD_TYPE;RRD_STEP;TYPE;CMD;COMMENT
-8/6/22;12;c;0.5;read;-c ehp00 YieldEnvironmentEnergy;Energieertrag 
-8/6/42;9;g;;read;-c ehp00 BrineTempInput temp;Quellentemperatur 
-8/6/41;9;g;;read;-c ehp00 BrineTempOutput temp;Austrittstemperatur
+8/6/22;12;c;0.5;r;ehp00 YieldEnvironmentEnergy;Energieertrag 
+8/6/42;9;g;;r;ehp00 BrineTempInput temp;Quellentemperatur 
+8/6/41;9;g;;r;ehp00 BrineTempOutput temp;Austrittstemperatur
