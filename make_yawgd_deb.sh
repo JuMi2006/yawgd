@@ -18,7 +18,7 @@
 #
 
 BUILD_DIR=/tmp
-VERSION='1.01'
+VERSION='1.02'
 
 cd $BUILD_DIR
 printf ">>> Build directory $BUILD_DIR create $BUILD_DIR/ebusd_build\n"
@@ -73,8 +73,8 @@ etc/logrotate.d" > trunk/DEBIAN/dirs
 
 printf ">>> ../DEBIAN/postinst\n"
 echo "#! /bin/sh -e
-update-rc.d yawgd defaults
-/etc/init.d/yawgd restart" > trunk/DEBIAN/postinst
+systemctl daemon-reload
+service yawgd restart" > trunk/DEBIAN/postinst
 chmod +x trunk/DEBIAN/postinst
 
 mkdir yawgd-$VERSION
