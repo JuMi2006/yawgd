@@ -1077,7 +1077,7 @@ sub update_rrd {
             'RRA:AVERAGE:0.5:1:1826', 'RRA:AVERAGE:0.5:'.$rrasteps.':1300',
             'RRA:MIN:0.5:1:1826',     'RRA:MIN:0.5:'.$rrasteps.':1300',
             'RRA:MAX:0.5:1:1826',     'RRA:MAX:0.5:'.$rrasteps.':1300',
-            '-s '.($stephours*3600));
+            '--step' => ($stephours*3600));
             if (RRDs::error) {
                 LOGGER('INFO',"Create RRDs failed for $key$suffix :".RRDs::error);
             } else {
