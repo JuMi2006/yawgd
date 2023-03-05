@@ -18,7 +18,7 @@
 #
 
 BUILD_DIR=/tmp
-VERSION='1.02'
+VERSION='2.00'
 
 cd $BUILD_DIR
 printf ">>> Build directory $BUILD_DIR create $BUILD_DIR/ebusd_build\n"
@@ -26,7 +26,7 @@ mkdir yawgd-build
 cd yawgd-build
 
 printf ">>> Checkout sources\n"
-git clone https://github.com/JuMi2006/yawgd.git
+git clone https://github.com/XueSheng-GIT/yawgd.git
 cd yawgd
 
 printf ">>> Remove hidden files\n"
