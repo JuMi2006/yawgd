@@ -100,7 +100,7 @@ foreach my $get (@gets){
     if (defined $msg{'apci'}){
     if ($msg{'apci'} eq "A_GroupValue_Read" && $msg{'dst'} eq $get->{ga}){
         plugin_log($plugname,"Response $msg{'apci'}");
-        my $send_get = $get->{type}." ".$get->{short};
+        my $send_get = $get->{type}." -c ".$get->{short};
         $answer = send_ebusd ($send_get);
         chomp $answer;
         if ($answer =~ /error/){
