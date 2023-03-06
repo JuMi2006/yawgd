@@ -1,8 +1,10 @@
 #!/usr/bin/perl
 #perl /root/make_ebus_config.pl -i /root/ebus2/ebusd/vaillant.csv -o /tmp/test2.csv
 # makes config from ebusd cvs-files
-# M.Hirsch
-# 2013
+#
+# Originally developed by M.Hirsch, 2013
+# Modified by john30, 2015
+# Modified by XueSheng-GIT, 2023
 
 use warnings;
 use strict;
@@ -39,61 +41,62 @@ while (<GETCFG>){
     #if ($debug){plugin_log($plugname,"line $_");}
     chomp $_;
     $_ =~ s/;/#/g;
-    $_ =~ s/^([^"]*)(,"[^",]*")?,"([^"]*),([^"]*)"/$1$2,"$3#$4"/g;
-    $_ =~ s/^([^"]*),"([^"]*)"/$1,$2/g;
+    if ($_ =~ s/^([^"]*),"([^"]*)"/$1,$2/g) {
+      my ($one, $two) = ($1, $2);
+      $two =~ s/,/#/g;
+      $_ = "$one,$two";
+    }
     my @array = split (/,/,$_);
     my $type = $array[0];
     my $class = $array[1];
-    if (length $class > 0) {
-      my $name = $array[2];
-      my $comment = $array[3];
-      $comment =~ s/#/,/g;
-      my $elements = (@array - 8 + 5) / 6;
-      my $prefix = $class." ".$name;
-      my $cmd;
-      my $comm;
-      my $pos = 8;
-      my $cnt = 0;
-      my %cnts;
-      my %ccnts;
-      for (my $i=0; $i < $elements; $i++, $pos+=6) {
-        if (substr($array[$pos+2], 0, 3) ne "IGN") {
-          if ($cnt==0 or $array[$pos]) {
-            $cnt++;
-            if ($cnts{$array[$pos]}) {
-              $cnts{$array[$pos]}++;
-            } else {
-              $cnts{$array[$pos]} = 1;
-            }
-            $ccnts{$array[$pos]} = 0;
-          }
-        }
+    my $name = $array[2];
+    my $comment = $array[3];
+    $comment =~ s/#/,/g;
+    my $elements = (@array - 8) / 6;
+    $elements = 1 if ($elements == 0);
+    my $prefix = $class." ".$name;
+    my $cmd;
+    my $comm;
+    my $pos = 8;
+    my $cnt = 0;
+    my %cnts;
+    my %ccnts;
+    for (my $i=0; $i < $elements; $i++, $pos+=6) {
+      next if ($array[$pos+2] and substr($array[$pos+2], 0, 3) =~ m/IGN/);
+      $cnt++;
+      next if (not defined $array[$pos]);
+      if ($cnts{$array[$pos]}) {
+        $cnts{$array[$pos]}++;
+      } else {
+        $cnts{$array[$pos]} = 1;
       }
-      $pos = 8;
-      for (my $i=0, my $j=0; $i < $elements and $j < $cnt; $i++, $pos+=6) {
-        if (($cnt==1 or $array[$pos]) and (substr($array[$pos+2], 0, 3) ne "IGN")) {
-          if ($cnt>1 and $array[$pos]) {
-            $cmd = $prefix." ".$array[$pos];
-            if ($cnts{$array[$pos]} > 1) {
-              $cmd .= ".".$ccnts{$array[$pos]}++;
-            }
-          } else {
-            $cmd = $prefix;
-          }
-          if ($array[$pos+5]) {
-            $comm = $array[$pos+5];
-            $comm =~ s/#/,/g;
-            if (length $comment) {
-              $comm = $comment.". ".$comm;
-            }
-          } else {
-            $comm = $comment;
-          }
-          #print $type." ".$cmd." ".$comment."\n";
-          push @cmds,{type => $type, cmd => $cmd, comment => $comm};
-          $j++;
+      $ccnts{$array[$pos]} = 0;
+    }
+    $pos = 8;
+    for (my $i=0, my $j=0; $i < $elements and $j < $cnt; $i++, $pos+=6) {
+      next if ($array[$pos+2] and substr($array[$pos+2], 0, 3) =~ m/IGN/);
+      if ($cnt>1 and $array[$pos]) {
+        $cmd = $prefix." ".$array[$pos];
+        if ($cnts{$array[$pos]} > 1) {
+          $cmd .= ".".$ccnts{$array[$pos]}++;
         }
+      } elsif ($cnt>1) {
+        next;
+      } else {
+        $cmd = $prefix;
       }
+      if ($array[$pos+5]) {
+        $comm = $array[$pos+5];
+        $comm =~ s/#/,/g;
+        if (length $comment) {
+          $comm = $comment.". ".$comm;
+        }
+      } else {
+        $comm = $comment;
+      }
+      #print $type." ".$cmd." ".$comment."\n";
+      push @cmds,{type => $type, cmd => $cmd, comment => $comm};
+      $j++;
     }
   }
 }

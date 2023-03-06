@@ -18,7 +18,7 @@
 #
 
 BUILD_DIR=/tmp
-VERSION='2.00'
+VERSION='2.01'
 
 cd $BUILD_DIR
 printf ">>> Build directory $BUILD_DIR create $BUILD_DIR/ebusd_build\n"
