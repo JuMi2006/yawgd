@@ -80,6 +80,8 @@ while (<GETCFG>){
         if ($cnts{$array[$pos]} > 1) {
           $cmd .= ".".$ccnts{$array[$pos]}++;
         }
+      } elsif ($array[$pos]) {
+        $cmd = $prefix." ".$array[$pos];
       } elsif ($cnt>1) {
         next;
       } else {
