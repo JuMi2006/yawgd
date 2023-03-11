@@ -78,7 +78,7 @@ foreach my $set(@sets){
         ### Check for Response
         foreach my $get (@gets){
             if ($get->{short} eq $set->{short}){
-                my $send_get = $get->{type}." -c ".$get->{short};
+                my $send_get = $get->{type}." -n -c ".$get->{short};
                 $answer = send_ebusd ($send_get);
                 $answer =~ s!\s!!g;
                 plugin_log($plugname,"$get->{type} $get->{short} $answer");
@@ -100,7 +100,7 @@ foreach my $get (@gets){
     if (defined $msg{'apci'}){
     if ($msg{'apci'} eq "A_GroupValue_Read" && $msg{'dst'} eq $get->{ga}){
         plugin_log($plugname,"Response $msg{'apci'}");
-        my $send_get = $get->{type}." -c ".$get->{short};
+        my $send_get = $get->{type}." -n -c ".$get->{short};
         $answer = send_ebusd ($send_get);
         chomp $answer;
         if ($answer =~ /error/){
@@ -123,7 +123,7 @@ unless (defined $msg{'dst'}) { #so doesnt work if a telegram reaches plugin
         if ($get->{id} == $plugin_info{$plugname.'_number'}){
             if ($debug){plugin_log($plugname,"ID: $get->{id}");}
             if ($debug){plugin_log($plugname,"$get->{short}")};
-            my $send_get = $get->{type}." -c ".$get->{short};
+            my $send_get = $get->{type}." -n -c ".$get->{short};
             $answer = send_ebusd ($send_get);
             chomp $answer;
             if ($answer =~ /error/){
