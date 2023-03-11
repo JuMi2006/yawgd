@@ -41,12 +41,17 @@ while (<GETCFG>){
     #if ($debug){plugin_log($plugname,"line $_");}
     chomp $_;
     $_ =~ s/;/#/g;
-    if ($_ =~ s/^([^"]*),"([^"]*)"/$1,$2/g) {
-      my ($one, $two) = ($1, $2);
-      $two =~ s/,/#/g;
-      $_ = "$one,$two";
+    
+    # split by separator ',' but respect existing quotes
+    # ref: https://stackoverflow.com/a/3068793
+    my @array;
+    my $sep = ',';
+    my $re = qr/(?:^|$sep)(?:"([^"]*)"|([^$sep]*))/;
+    while($_ =~ /$re/g) {
+      my $value = defined $1 ? $1 : $2;
+      push @array, (defined $value ? $value : '');
     }
-    my @array = split (/,/,$_);
+
     my $type = $array[0];
     my $class = $array[1];
     my $name = $array[2];
@@ -75,13 +80,12 @@ while (<GETCFG>){
     $pos = 8;
     for (my $i=0, my $j=0; $i < $elements and $j < $cnt; $i++, $pos+=6) {
       next if ($array[$pos+2] and substr($array[$pos+2], 0, 3) =~ m/IGN/);
+      print "[DEBUG] array[pos]=$array[$pos]\n";
       if ($cnt>1 and $array[$pos]) {
         $cmd = $prefix." ".$array[$pos];
         if ($cnts{$array[$pos]} > 1) {
           $cmd .= ".".$ccnts{$array[$pos]}++;
         }
-      } elsif ($array[$pos]) {
-        $cmd = $prefix." ".$array[$pos];
       } elsif ($cnt>1) {
         next;
       } else {
