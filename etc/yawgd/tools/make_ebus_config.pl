@@ -80,7 +80,6 @@ while (<GETCFG>){
     $pos = 8;
     for (my $i=0, my $j=0; $i < $elements and $j < $cnt; $i++, $pos+=6) {
       next if ($array[$pos+2] and substr($array[$pos+2], 0, 3) =~ m/IGN/);
-      print "[DEBUG] array[pos]=$array[$pos]\n";
       if ($cnt>1 and $array[$pos]) {
         $cmd = $prefix." ".$array[$pos];
         if ($cnts{$array[$pos]} > 1) {
