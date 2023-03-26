@@ -31,11 +31,12 @@ use IO::Select;
 use FileHandle;
 use Proc::PID::File;
 # fork daemon
-use Proc::Daemon;
-Proc::Daemon::Init unless $opts{d};
+#use Proc::Daemon;
+#Proc::Daemon::Init unless $opts{d};
 #use xPL::Client;
 use EIBConnection;
 use feature "switch";
+no warnings qw( experimental::smartmatch );
 use File::Basename;
 use DB_File;
 
