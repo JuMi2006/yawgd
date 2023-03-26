@@ -1,15 +1,14 @@
 [Unit]
-Description=YAWGD daemon
-After=network.target network-online.target connman.service avahi-daemon.service
+Description=YAWGD Daemon
+After=network.target knxd.service
 
 [Service]
-Type=forking
-ExecStart=/usr/sbin/yawgd.pl
-
-Restart=on-failure
-RestartSec=60
+ExecStart=/usr/sbin/yawgd.pl -p /run/yawdg.pl.pid
 User=root
 Group=root
 
+Restart=on-failure
+RestartSec=10
+
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.target network-online.target
