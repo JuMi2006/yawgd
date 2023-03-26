@@ -20,7 +20,7 @@
 # Adapted by XueSheng-GIT, 2023
 
 BUILD_DIR=/tmp
-VERSION='2.01'
+VERSION='2.10'
 
 cd $BUILD_DIR
 printf ">>> Build directory $BUILD_DIR create $BUILD_DIR/ebusd_build\n"
