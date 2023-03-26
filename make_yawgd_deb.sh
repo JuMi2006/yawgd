@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with ebusd. If not, see http://www.gnu.org/licenses/.
 #
+# Original version by Mirko Hirsch
+# Adapted by XueSheng-GIT, 2023
 
 BUILD_DIR=/tmp
 VERSION='2.01'
@@ -45,7 +47,7 @@ printf ">>> Remove Plugins/eBus-related stuff\n"
 touch i-m-here
 rm -r etc/yawgd/plugin/*
 rm -r etc/yawgd/tools/*
-rm etc/yawgd/plugin-database.db
+rm etc/yawgd/yawgd_plugin.db
 rm etc/yawgd/eBus_plugin.conf
 rm etc/yawgd/yawgd-ebusd.csv
 
@@ -57,8 +59,9 @@ Version: $VERSION
 Section: net
 Priority: required
 Architecture: $ARCH
-Maintainer: Mirko Hirsch <mirko.hirsch@gmx.de>
-Depends: liblog-log4perl-perl, libproc-pid-file-perl (>= 1.25), libfile-touch-perl, librrds-perl, libmath-round-perl, libmath-round-perl, libconfig-std-perl, libproc-daemon-perl
+Maintainer: XueSheng-GIT
+Depends: liblog-log4perl-perl, libproc-pid-file-perl (>= 1.25), libfile-touch-perl, librrds-perl, libmath-round-perl, libmath-round-perl, libconfig-std-perl, libproc-daemon-perl, knxd, 
+knxd-tools, knxd-dev
 Description: Daemon for EIB/KNX\n" > trunk/DEBIAN/control
 
 printf ">>> ../DEBIAN/dirs\n"
