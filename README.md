@@ -6,11 +6,15 @@ Es wurden einige Veränderungen und neue Funktionen hinzugefügt, weiterhin wurd
 * vollständig anpassbare: Logfiles+Pfade, Plugin-Pfade etc.
 * interne Speicherüberwachung da es ggf. Memleaks gibt (Plattformabhängig)
 
+##Docker
+Um den yawgd in Docker laufen zu lassen, gibt es das [Dockerfile](Dockerfile).
+* um ein Image zu bauen: `docker build -t yawgd .`
+* um einen Container zu starten: `docker run --name yawgd -v /host/path/to/etc/yawgd:/etc/yawgd -v /host/path/to/log:/var/log -e TZ=Europe/Berlin yawgd`
+
 ##Dateistruktur
 Im Kern besteht dieser für ein Fremdsystem (non WireGate) aus der folgenden Dateistruktur.
 
 Die Teile die schon Bestandteil des WireGates sind markiere ich im folgenden mit einem "*".
-
 
 **/etc/init.d/yawgd**
 
